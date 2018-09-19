@@ -1519,7 +1519,7 @@ class EpubReader(object):
                     ei.content = self.read_file(zip_path.join(self.opf_dir, ei.get_name()))
                     ei.properties = properties
             elif media_type in IMAGE_MEDIA_TYPES:
-                if 'cover-image' in properties:
+                if 'cover-image' in properties or 'cover.jpg' in r.get('id'):
                     ei = EpubCover(uid=r.get('id'), file_name=unquote(r.get('href')))
 
                     ei.media_type = media_type
