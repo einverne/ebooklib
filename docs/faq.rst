@@ -19,7 +19,7 @@ content it saves and etc. Different EPUB files will place style sheet files, ima
 different directories than ebooklib. Ebooklib is also trying to produce valid EPUB3 output files, which is not
 always the case with all input files. A lot of times input files will not pass epubcheck validation.
 
-Because of that we we suggest that you read EPUB file using ebooklib, create new book instance using ebooklib and
+Because of that we suggest that you read EPUB file using ebooklib, create new book instance using ebooklib and
 transfer only things you care about. It is also up to you to change the paths for the links inside
 (to style sheets, images and other html files). When you are done just write it down.
 
