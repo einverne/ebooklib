@@ -560,6 +560,7 @@ class EpubBook(object):
 
         self.IDENTIFIER_ID = 'id'
         self.FOLDER_NAME = 'EPUB'
+        self.COVER_ID = ''
 
         self._id_html = 0
         self._id_image = 0
@@ -1474,6 +1475,13 @@ class EpubReader(object):
             if others.get('id') == self.book.IDENTIFIER_ID:
                 self.book.uid = value
 
+        try:
+            cover_id = self.book.get_metadata('OPF', 'cover')
+            if cover_id:
+                self.book.COVER_ID = cover_id[0][1]['content']
+        except Exception as e:
+            logging.warn("Get metadata cover id failed")
+
     def _load_manifest(self):
         for r in self.container.find('{%s}%s' % (NAMESPACES['OPF'], 'manifest')):
             if r is not None and r.tag != '{%s}item' % NAMESPACES['OPF']:
@@ -1521,7 +1529,9 @@ class EpubReader(object):
             elif media_type in IMAGE_MEDIA_TYPES:
                 # take suggestion metioned here
                 # https://github.com/aerkalov/ebooklib/issues/171
-                if 'cover-image' in properties or 'cover' in r.get('id').lower():
+                if 'cover-image' in properties \
+                or self.book.COVER_ID == r.get('id') \
+                or 'cover' in r.get('id').lower():
                     ei = EpubCover(uid=r.get('id'), file_name=unquote(r.get('href')))
 
                     ei.media_type = media_type
